@@ -6,6 +6,7 @@ api_id = "API_ID"  # API_ID خودت رو وارد کن
 api_hash = "API_HASH"  # API_HASH خودت رو وارد کن
 bot_token = "BOT_TOKEN"  # توکن ربات رو وارد کن
 
+# ایجاد یک شی Client از Pyrogram
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 @app.on_message(filters.command('start'))
@@ -19,9 +20,13 @@ def download_video(client, message):
         'format': 'bestaudio/best',  # یا می‌تونی کیفیت مد نظر خودت رو انتخاب کنی
         'outtmpl': 'downloads/%(id)s.%(ext)s',
     }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(link, download=True)
-        video_file = ydl.prepare_filename(info_dict)
-    app.send_document(message.chat.id, video_file)
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(link, download=True)
+            video_file = ydl.prepare_filename(info_dict)
+        app.send_document(message.chat.id, video_file)
+    except Exception as e:
+        message.reply(f"خطا در دانلود ویدیو: {str(e)}")
 
+# اجرا کردن ربات
 app.run()
