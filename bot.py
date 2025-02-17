@@ -28,5 +28,12 @@ def download_video(client, message):
     except Exception as e:
         message.reply(f"خطا در دانلود ویدیو: {str(e)}")
 
+import logging
+logging.basicConfig(level=logging.DEBUG)  # این باعث میشه که لاگ‌ها بیشتر بشه
+
+# در جای مناسب کد می‌تونی از print استفاده کنی
+logging.debug("این یک پیام لاگ است")
+
+
 # اجرا کردن ربات
 app.run()
